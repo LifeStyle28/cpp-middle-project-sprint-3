@@ -19,7 +19,6 @@ int main() {
 
     // Create a book database
     BookDatabase<std::vector<Book>> db;
-
     /*
 
     Код закомментирован, чтобы не приводить к ошибке компиляции

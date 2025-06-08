@@ -9,9 +9,17 @@ namespace bookdb {
 enum class Genre { Fiction, NonFiction, SciFi, Biography, Mystery, Unknown };
 
 // Ваш код для constexpr преобразования строк в enum::Genre и наоборот здесь
-
 constexpr Genre GenreFromString(std::string_view s) {
-    // Ваш код здесь
+    if (s == "Fiction")
+        return Genre::Fiction;
+    if (s == "NonFiction")
+        return Genre::NonFiction;
+    if (s == "SciFi")
+        return Genre::SciFi;
+    if (s == "Biography")
+        return Genre::Biography;
+    if (s == "Mystery")
+        return Genre::Mystery;
     return Genre::Unknown;
 }
 
@@ -25,7 +33,16 @@ struct Book {
     double rating;
     int read_count;
 
-    // Ваш код для конструкторов здесь
+    // Конструктор, принимающий Genre как enum
+    constexpr Book(std::string_view title, std::string_view author, int year, Genre genre, double rating,
+                   int read_count)
+        : author{author}, title{title}, year{year}, genre{genre}, rating{rating}, read_count{read_count} {}
+
+    // Конструктор, принимающий Genre как строку
+    constexpr Book(std::string_view title, std::string_view author, int year, std::string_view genre, double rating,
+                   int read_count)
+        : author{author}, title{title}, year{year}, genre{GenreFromString(genre)}, rating{rating},
+          read_count{read_count} {}
 };
 }  // namespace bookdb
 
@@ -57,6 +74,18 @@ struct formatter<bookdb::Genre, char> {
     }
 };
 
-// Ваш код для std::formatter<Book> здесь
+template <>
+struct formatter<bookdb::Book, char> {
+    template <typename FormatContext>
+    auto format(const bookdb::Book &book, FormatContext &fc) const {
+        return format_to(fc.out(),
+                         "Book{{author: \"{}\", title: \"{}\", year: {}, genre: {}, rating: {:.1f}, read_count: {}}}",
+                         book.author, book.title, book.year, book.genre, book.rating, book.read_count);
+    }
+
+    constexpr auto parse(format_parse_context &ctx) {
+        return ctx.begin();  // Игнорируем пользовательский формат
+    }
+};
 
 }  // namespace std
