@@ -33,7 +33,7 @@ auto any_of(Predicates &&...preds) {
 }
 
 template <BookIterator It>
-std::vector<std::reference_wrapper<const Book>> filterBooks(const It begin,
+[[nodiscard]] std::vector<std::reference_wrapper<const Book>> filterBooks(const It begin,
                                                             const It end,
                                                             std::predicate<const Book &> auto predicate) {
 
@@ -45,7 +45,7 @@ std::vector<std::reference_wrapper<const Book>> filterBooks(const It begin,
 }
 
 template <typename T>
-std::vector<std::reference_wrapper<const Book>> filterBooks(std::span<T> span, const auto& predicate) {
+[[nodiscard]] std::vector<std::reference_wrapper<const Book>> filterBooks(std::span<T> span, const auto& predicate) {
     std::vector<std::reference_wrapper<const Book>> result;
     for (const auto& book : span) {
         if (predicate(book)) {

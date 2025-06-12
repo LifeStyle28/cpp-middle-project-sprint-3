@@ -32,7 +32,7 @@ struct formatter<flat_map<K, V, C>> {
 namespace bookdb {
 
 template <BookContainerLike T>
-auto buildAuthorHistogramFlat(const BookDatabase<T>& cont) {
+[[nodiscard]] auto buildAuthorHistogramFlat(const BookDatabase<T>& cont) {
     std::flat_map<std::string, size_t, LessByAuthor> histogram;
 
     for (const auto& [author, books] : cont.GetAuthors()) {
@@ -62,7 +62,7 @@ private:
 };
 
 template <BookIterator It>
-auto calculateGenreRatings(It begin, It end) {
+[[nodiscard]] auto calculateGenreRatings(It begin, It end) {
     std::flat_map<Genre, GenreStats, LessByGenre> genre_stats;
 
     for (auto cit = begin; cit != end; cit = std::next(cit)) {
@@ -91,7 +91,7 @@ double calculateAverageRating(const BookDatabase<T>& cont) {
 }
 
 template <BookContainerLike T>
-std::vector<std::reference_wrapper<const Book>> sampleRandomBooks(const BookDatabase<T>& cont, size_t count) {
+[[nodiscard]] std::vector<std::reference_wrapper<const Book>> sampleRandomBooks(const BookDatabase<T>& cont, size_t count) {
     std::vector<std::reference_wrapper<const Book>> result;
 
     if (cont.empty() || count == 0) {
@@ -107,7 +107,7 @@ std::vector<std::reference_wrapper<const Book>> sampleRandomBooks(const BookData
 }
 
 template <BookContainerLike T, typename Comp>
-std::vector<std::reference_wrapper<const Book>> getTopNBy(BookDatabase<T>& cont, size_t count, Comp comp) {
+[[nodiscard]] std::vector<std::reference_wrapper<const Book>> getTopNBy(BookDatabase<T>& cont, size_t count, Comp comp) {
     std::vector<std::reference_wrapper<const Book>> result;
 
     if (cont.empty() || count == 0) {

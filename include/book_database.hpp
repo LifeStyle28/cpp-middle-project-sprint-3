@@ -88,9 +88,9 @@ public:
         authors_emplace();
     }
 
-    const BookContainer &GetBooks() const noexcept { return books_; }
+    [[nodiscard]] const BookContainer &GetBooks() const noexcept { return books_; }
 
-    const AuthorContainer &GetAuthors() const noexcept { return authors_; }
+    [[nodiscard]] const AuthorContainer &GetAuthors() const noexcept { return authors_; }
 
 private:
     void authors_emplace() {
