@@ -7,7 +7,13 @@ namespace bookdb {
 
 // Компаратор для сравнения книг по автору
 struct LessByAuthor {
-    constexpr bool operator()(const Book &lhs, const Book &rhs) const { return lhs.author < rhs.author; }
+    constexpr bool operator()(const Book& a, const Book& b) const {
+        return a.author < b.author;
+    }
+
+    constexpr bool operator()(const std::string& a, const std::string& b) const {
+        return a < b;
+    }
 };
 
 // Компаратор для сравнения книг по названию
@@ -27,17 +33,17 @@ struct LessByGenre {
     }
 };
 
-// Компаратор для сравнения книг по рейтингу (по убыванию)
-struct GreaterByRating {
+// Компаратор для сравнения книг по рейтингу (по возрастанию)
+struct LessByRating {
     constexpr bool operator()(const Book &lhs, const Book &rhs) const {
-        return lhs.rating > rhs.rating;  // Обратный порядок для сортировки по убыванию
+        return lhs.rating < rhs.rating;
     }
 };
 
-// Компаратор для сравнения книг по количеству прочтений (по убыванию)
-struct GreaterByReadCount {
+// Компаратор для сравнения книг по количеству прочтений (по возрастанию)
+struct LessByPopularity {
     constexpr bool operator()(const Book &lhs, const Book &rhs) const {
-        return lhs.read_count > rhs.read_count;  // Обратный порядок для сортировки по убыванию
+        return lhs.read_count < rhs.read_count;
     }
 };
 

@@ -3,6 +3,7 @@
 #include <format>
 #include <stdexcept>
 #include <string_view>
+#include <flat_map>
 
 namespace bookdb {
 
@@ -21,6 +22,23 @@ constexpr Genre GenreFromString(std::string_view s) {
     if (s == "Mystery")
         return Genre::Mystery;
     return Genre::Unknown;
+}
+
+constexpr std::string_view StringFromGenre(Genre genre) {
+    switch (genre) {
+        case Genre::Fiction:
+            return "Fiction";
+        case Genre::NonFiction:
+            return "NonFiction";
+        case Genre::SciFi:
+            return "SciFi";
+        case Genre::Biography:
+            return "Biography";
+        case Genre::Mystery:
+            return "Mystery";
+        default:
+            return "Unknown";
+    }
 }
 
 struct Book {
@@ -79,7 +97,7 @@ struct formatter<bookdb::Book, char> {
     template <typename FormatContext>
     auto format(const bookdb::Book &book, FormatContext &fc) const {
         return format_to(fc.out(),
-                         "Book{{author: \"{}\", title: \"{}\", year: {}, genre: {}, rating: {:.1f}, read_count: {}}}",
+                         "Book{{author: '{}', title: '{}', year: {}, genre: {}, rating: {:.1f}, read_count: {}}}",
                          book.author, book.title, book.year, book.genre, book.rating, book.read_count);
     }
 

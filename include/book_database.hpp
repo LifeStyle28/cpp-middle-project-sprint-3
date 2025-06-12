@@ -27,7 +27,7 @@ public:
     using difference_type = typename BookContainer::difference_type;
     using size_type = typename BookContainer::size_type;
 
-    using AuthorContainer = std::unordered_map<std::string, std::list<typename BookContainer::iterator>,
+    using AuthorContainer = std::unordered_map<std::string, std::list<std::string>,
                                                TransparentStringHash, TransparentStringEqual>;
 
     BookDatabase() = default;
@@ -95,7 +95,7 @@ public:
 private:
     void authors_emplace() {
         auto it = std::prev(books_.end());
-        authors_.emplace(std::string(it->author), std::list<iterator>{it});
+        authors_[std::string(it->author)].emplace_back(it->title);
     }
 
 private:
@@ -110,22 +110,17 @@ template <>
 struct formatter<bookdb::BookDatabase<std::vector<bookdb::Book>>> {
     template <typename FormatContext>
     auto format(const bookdb::BookDatabase<std::vector<bookdb::Book>> &db, FormatContext &fc) const {
-        /*
-        Раскомментируйте, когда bookdb::BookDatabase поддержит интерфейсы, доступные стандартным контейнерам
-        (size/begin/...)
-
         format_to(fc.out(), "BookDatabase (size = {}): ", db.size());
 
         format_to(fc.out(), "Books:\n");
-        for (const auto &book : db.GetBooks()) {
+        for (const auto& book : db.GetBooks()) {
             format_to(fc.out(), "- {}\n", book);
         }
 
         format_to(fc.out(), "Authors:\n");
-        for (const auto &author : db.GetAuthors()) {
+        for (const auto& [author, books] : db.GetAuthors()) {
             format_to(fc.out(), "- {}\n", author);
         }
-        */
         return fc.out();
     }
 
