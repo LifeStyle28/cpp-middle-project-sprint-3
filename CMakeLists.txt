@@ -8,10 +8,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     # Все предупреждения - это ошибки
-    add_compile_options(-Wfatal-errors -Wall -Werror)
+    add_compile_options(-Wfatal-errors -Wall -Werror -g -O1 -Wextra -pedantic)
 
     # Не больше одной ошибки за раз
     add_compile_options(-fmax-errors=1)
+
+    add_compile_options(-fsanitize=address,undefined)
+    add_link_options(-fsanitize=address,undefined)
 endif()
 
 # Ищем необходимые библиотеки
