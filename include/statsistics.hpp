@@ -65,10 +65,10 @@ template <BookIterator It>
 [[nodiscard]] auto calculateGenreRatings(It begin, It end) {
     std::flat_map<Genre, GenreStats, LessByGenre> genre_stats;
 
-    for (auto cit = begin; cit != end; cit = std::next(cit)) {
-        auto [it, inserted] = genre_stats.try_emplace(cit->genre, GenreStats{});
-        it->second.Add(cit->rating);
-    }
+    std::for_each(begin, end, [&genre_stats](const auto& book) {
+        auto [it, inserted] = genre_stats.try_emplace(book.genre, GenreStats{});
+        it->second.Add(book.rating);
+    });
 
     std::flat_map<Genre, double, LessByGenre> ratings;
     for (const auto& [genre, stats] : genre_stats) {

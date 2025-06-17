@@ -95,7 +95,13 @@ public:
 private:
     void authors_emplace() {
         auto it = std::prev(books_.end());
-        authors_[std::string(it->author)].emplace_back(it->title);
+        auto [author_it, inserted] = authors_.try_emplace(std::string(it->author));
+        if (inserted) {
+            author_it->second = std::list<std::string>{it->title};
+        } else {
+            author_it->second.emplace_back(it->title);
+        }
+        it->author = author_it->first;
     }
 
 private:

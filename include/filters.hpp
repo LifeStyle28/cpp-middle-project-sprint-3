@@ -47,11 +47,7 @@ template <BookIterator It>
 template <typename T>
 [[nodiscard]] std::vector<std::reference_wrapper<const Book>> filterBooks(std::span<T> span, const auto& predicate) {
     std::vector<std::reference_wrapper<const Book>> result;
-    for (const auto& book : span) {
-        if (predicate(book)) {
-            result.push_back(std::cref(book));
-        }
-    }
+    std::copy_if(span.begin(), span.end(), std::back_inserter(result), predicate);
     return result;
 }
 
